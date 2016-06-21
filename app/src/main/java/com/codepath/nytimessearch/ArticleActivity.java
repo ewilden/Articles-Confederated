@@ -28,7 +28,7 @@ public class ArticleActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Article article = (Article) getIntent().getSerializableExtra("article");
+        Article article = (Article) getIntent().getParcelableExtra("article");
 
 
         WebView webView = (WebView) findViewById(R.id.wvArticle);
