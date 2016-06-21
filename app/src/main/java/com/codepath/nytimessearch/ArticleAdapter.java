@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 
 /**
  * Created by evanwild on 6/20/16.
@@ -38,6 +39,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
             super(view);
             ButterKnife.bind(this, view);
         }
+
+
     }
 
     @Override

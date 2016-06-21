@@ -65,6 +65,7 @@ public class SearchActivity extends AppCompatActivity {
                 loadMoreArticles(page);
             }
         });
+        setUpClickListener();
     }
 
     public void loadMoreArticles(int offset) {
@@ -98,22 +99,23 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    /*
-    @OnItemClick(R.id.rvResults)
-    public void openArticle(int position) {
-        // create an intent to display the article
-        Intent i = new Intent(getApplicationContext(), ArticleActivity.class);
+    private void setUpClickListener() {
+        ItemClickSupport.addTo(rvResults).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Intent i = new Intent(getApplicationContext(), ArticleActivity.class);
 
-        // get the article to display
-        Article article = articles.get(position);
+                // get the article to display
+                Article article = articles.get(position);
 
-        // pass in that article into intent
-        i.putExtra("article", article);
+                // pass in that article into intent
+                i.putExtra("article", article);
 
-        // launch the activity
-        startActivity(i);
+                // launch the activity
+                startActivity(i);
+            }
+        });
     }
-    */
 
 
     @Override
