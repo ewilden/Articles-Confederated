@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -19,6 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by evanwild on 6/20/16.
@@ -69,12 +71,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
         // Populate thumbnail image
         String thumbUrl = article.getThumbNail();
-        if (!thumbUrl.equals(""))
-            Picasso.with(holder.ivImage.getContext()).load(thumbUrl).fit().centerCrop().
-                    placeholder(R.drawable.placeholder_thumbnail).into(holder.ivImage);
-        else {
-            // handle no images associated with article
-        }
+        Context c = holder.ivImage.getContext();
+            Glide.with(c).load(thumbUrl).placeholder(R.drawable.placeholder_thumbnail).
+                    error(R.drawable.placeholder_thumbnail).
+                bitmapTransform(new CropCircleTransformation(c))
+                                        .into(holder.ivImage);
     }
 
     @Override
