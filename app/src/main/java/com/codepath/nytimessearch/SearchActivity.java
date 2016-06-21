@@ -2,15 +2,15 @@ package com.codepath.nytimessearch;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -37,11 +37,12 @@ public class SearchActivity extends AppCompatActivity {
     private final String BASE_URL = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
 
     @BindView(R.id.etQuery) EditText etQuery;
-    @BindView(R.id.gvResults) GridView gvResults;
+    @BindView(R.id.rvResults) RecyclerView rvResults;
     @BindView(R.id.btnSearch) Button btnSearch;
 
+
     private ArrayList<Article> articles;
-    private ArticleArrayAdapter adapter;
+    private ArticleAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +53,14 @@ public class SearchActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         articles = new ArrayList<>();
-        adapter = new ArticleArrayAdapter(this, articles);
-        gvResults.setAdapter(adapter);
+        adapter = new ArticleAdapter(articles);
+        rvResults.setAdapter(adapter);
+        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        rvResults.setLayoutManager(gridLayoutManager);
     }
 
-    @OnItemClick(R.id.gvResults)
+    /*
+    @OnItemClick(R.id.rvResults)
     public void openArticle(int position) {
         // create an intent to display the article
         Intent i = new Intent(getApplicationContext(), ArticleActivity.class);
@@ -70,6 +74,8 @@ public class SearchActivity extends AppCompatActivity {
         // launch the activity
         startActivity(i);
     }
+    */
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,7 +101,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public void onArticleSearch(View view) {
         String query = etQuery.getText().toString();
-        //Toast.makeText(SearchActivity.this, "Searching for "+ query, Toast.LENGTH_SHORT).show();
+        Toast.makeText(SearchActivity.this, "Searching for "+ query, Toast.LENGTH_SHORT).show();
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
@@ -106,14 +112,15 @@ public class SearchActivity extends AppCompatActivity {
         client.get(BASE_URL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                //Log.d("DEBUG", response.toString());
+                Log.d("DEBUG", response.toString());
                 JSONArray articleJsonResults = null;
 
                 try {
                     articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
-                    // Log.d("DEBUG", articleJsonResults.toString());
-                    adapter.addAll(Article.fromJSONArray(articleJsonResults));
-                    Log.d("DEBUG", articles.toString());
+                    Log.d("DEBUG", articleJsonResults.toString());
+                    articles.clear();
+                    articles.addAll(Article.fromJSONArray(articleJsonResults));
+                    adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
