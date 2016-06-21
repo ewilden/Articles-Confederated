@@ -72,9 +72,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         // Populate thumbnail image
         String thumbUrl = article.getThumbNail();
         Context c = holder.ivImage.getContext();
-            Glide.with(c).load(thumbUrl).placeholder(R.drawable.placeholder_thumbnail).
+            Glide.with(c).load(thumbUrl).//placeholder(R.drawable.placeholder_thumbnail).
                     error(R.drawable.placeholder_thumbnail).
-                bitmapTransform(new CropCircleTransformation(c))
+                    bitmapTransform(new CropCircleTransformation(c))
                                         .into(holder.ivImage);
     }
 
