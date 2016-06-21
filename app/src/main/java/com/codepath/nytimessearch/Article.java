@@ -16,6 +16,27 @@ public class Article implements Serializable {
     private String thumbNail;
     private final String PREFIX = "http://www.nytimes.com/";
 
+    public Article(JSONObject jsonObject, String urlKey, String titleKey) {
+        try {
+            this.webUrl = jsonObject.getString(urlKey);
+            this.headline = jsonObject.getString(titleKey);
+
+            JSONArray multimedia = jsonObject.getJSONArray("multimedia");
+
+            if (multimedia.length() > 0) {
+                JSONObject multimediaJson = multimedia.getJSONObject(0);
+                this.thumbNail = multimediaJson.getString("url");
+            } else {
+                this.thumbNail = "";
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     public Article(JSONObject jsonObject) {
         try {
             this.webUrl = jsonObject.getString("web_url");
@@ -33,18 +54,23 @@ public class Article implements Serializable {
             e.printStackTrace();
         }
     }
-    public static ArrayList<Article> fromJSONArray(JSONArray array) {
+    public static ArrayList<Article> fromJSONArray(JSONArray array, boolean topStories) {
+
         ArrayList<Article> results = new ArrayList<>();
+
         for (int x = 0; x < array.length(); x++) {
             try {
-                results.add(new Article(array.getJSONObject(x)));
+                if (!topStories)
+                    results.add(new Article(array.getJSONObject(x)));
+                else
+                    results.add(new Article(array.getJSONObject(x), "url", "title"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-
         return results;
     }
+
 
     public String getWebUrl() {
         return webUrl;
