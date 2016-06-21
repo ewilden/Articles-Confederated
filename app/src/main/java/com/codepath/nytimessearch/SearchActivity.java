@@ -43,6 +43,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private ArrayList<Article> articles;
     private ArticleAdapter adapter;
+    private RequestParams lastParams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,44 @@ public class SearchActivity extends AppCompatActivity {
         rvResults.setAdapter(adapter);
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         rvResults.setLayoutManager(gridLayoutManager);
+
+        rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                loadMoreArticles(page);
+            }
+        });
+    }
+
+    public void loadMoreArticles(int offset) {
+        ArrayList<Article> moreItems = new ArrayList<>();
+        // Use API to get more items to add to the articles list
+        lastParams.put("page", offset);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(BASE_URL, lastParams, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("DEBUG", response.toString());
+                JSONArray articleJsonResults = null;
+
+                try {
+                    articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
+                    Log.d("DEBUG", articleJsonResults.toString());
+                    articles.addAll(Article.fromJSONArray(articleJsonResults));
+
+                    // For efficiency purposes, notify the adapter of only the elements that got changed
+                    // curSize will equal to the index of the first element inserted because the list is 0-indexed
+                    int curSize = adapter.getItemCount();
+                    adapter.notifyItemChanged(curSize, articles.size() - 1);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
     }
 
     /*
@@ -108,6 +147,8 @@ public class SearchActivity extends AppCompatActivity {
         params.put("api-key", API_KEY);
         params.put("page", 0);
         params.put("q", query);
+
+        lastParams = params;
 
         client.get(BASE_URL, params, new JsonHttpResponseHandler() {
             @Override
