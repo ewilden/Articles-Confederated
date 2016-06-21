@@ -45,6 +45,7 @@ public class SearchActivity extends AppCompatActivity {
     private RequestParams lastParams;
     private String lastQuery;
     private String lastUrl;
+    private StaggeredGridLayoutManager gridLayoutManager;
 
 
     @Override
@@ -58,7 +59,7 @@ public class SearchActivity extends AppCompatActivity {
         articles = new ArrayList<>();
         adapter = new ArticleAdapter(articles);
         rvResults.setAdapter(adapter);
-        StaggeredGridLayoutManager gridLayoutManager =
+        gridLayoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvResults.setLayoutManager(gridLayoutManager);
 
@@ -153,7 +154,7 @@ public class SearchActivity extends AppCompatActivity {
         articleSearch(lastQuery, offset, false, lastUrl);
     }
 
-    private void articleSearch(String query, int offset, boolean clear, String baseUrl) {
+    private void articleSearch(String query, final int offset, boolean clear, String baseUrl) {
         //Toast.makeText(SearchActivity.this, "Searching for "+ query, Toast.LENGTH_SHORT).show();
         lastQuery = query;
         lastUrl = baseUrl;
@@ -192,6 +193,14 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         else if (clear) {
+            rvResults.clearOnScrollListeners();
+            rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+                @Override
+                public void onLoadMore(int page, int totalItemsCount) {
+                    loadMoreArticles(page);
+                }
+            });
+
             client.get(baseUrl, params, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -220,13 +229,19 @@ public class SearchActivity extends AppCompatActivity {
                         articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                         //Log.d("DEBUG", articleJsonResults.toString());
                         articles.addAll(Article.fromJSONArray(articleJsonResults, false));
-                        adapter.notifyDataSetChanged();
+
+                        if (offset > 0) {
+                            int curSize = adapter.getItemCount();
+                            adapter.notifyItemRangeInserted(curSize, articles.size() - 1);
+                        } else
+                            adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             });
         }
+
     }
 
     /*
