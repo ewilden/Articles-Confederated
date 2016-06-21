@@ -78,12 +78,12 @@ public class SearchActivity extends AppCompatActivity {
         client.get(BASE_URL, lastParams, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("DEBUG", response.toString());
+                //Log.d("DEBUG", response.toString());
                 JSONArray articleJsonResults = null;
 
                 try {
                     articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
-                    Log.d("DEBUG", articleJsonResults.toString());
+                    //Log.d("DEBUG", articleJsonResults.toString());
                     articles.addAll(Article.fromJSONArray(articleJsonResults));
 
                     // For efficiency purposes, notify the adapter of only the elements that got changed
@@ -146,6 +146,8 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+
+
         return true;
     }
 
@@ -165,7 +167,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void articleSearch(String query) {
-        Toast.makeText(SearchActivity.this, "Searching for "+ query, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(SearchActivity.this, "Searching for "+ query, Toast.LENGTH_SHORT).show();
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
