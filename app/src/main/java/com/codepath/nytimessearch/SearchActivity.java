@@ -2,15 +2,18 @@ package com.codepath.nytimessearch;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -28,7 +31,8 @@ import cz.msebera.android.httpclient.Header;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private final String API_KEY = "aded083163334d4fb0c54f6b9ede94ea";
+    //private final String API_KEY = "aded083163334d4fb0c54f6b9ede94ea";
+    private final String API_KEY = "93718dded010432eb97833398a2db737";
     private final String SEARCH_URL = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
     private final String TOP_URL = "https://api.nytimes.com/svc/topstories/v2/home.json";
 
@@ -157,6 +161,11 @@ public class SearchActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Toast.makeText(SearchActivity.this, "Top stories failed!", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -191,7 +200,7 @@ public class SearchActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     //Log.d("DEBUG", response.toString());
                     JSONArray articleJsonResults = null;
-
+                    //Toast.makeText(SearchActivity.this, "Initial search succeeded!", Toast.LENGTH_SHORT).show();
                     try {
                         articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                         //Log.d("DEBUG", articleJsonResults.toString());
@@ -202,11 +211,19 @@ public class SearchActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    Log.d("SearchActivity", String.valueOf(errorResponse));
+                }
             });
         } else {
             client.get(SEARCH_URL, params, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                    //Toast.makeText(SearchActivity.this, "Loading more articles succeeded!", Toast.LENGTH_SHORT).show();
                     //Log.d("DEBUG", response.toString());
                     JSONArray articleJsonResults = null;
 
@@ -216,16 +233,28 @@ public class SearchActivity extends AppCompatActivity {
                         articles.addAll(Article.fromJSONArray(articleJsonResults, false));
                         int curSize = adapter.getItemCount();
                         adapter.notifyItemRangeInserted(curSize, articles.size() - 1);
+                        //adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    //Log.d("SearchActivity", "loadMoreArticles failed!");
+                    Toast.makeText(SearchActivity.this, "Loading more articles failed!", Toast.LENGTH_SHORT).show();
+                    //super.onFailure(statusCode, headers, throwable, errorResponse);
                 }
             });
         }
     }
 
+
     public void onFilter(MenuItem mi) {
-        
+        FragmentManager fm = getSupportFragmentManager();
+        FilterFragment ff = FilterFragment.newInstance("param1", "param2");
+        ff.show(fm, "fragment_filter");
+
     }
 
     /*
