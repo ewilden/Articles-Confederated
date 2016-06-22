@@ -8,11 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -23,6 +25,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Filter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +50,10 @@ public class SearchActivity extends AppCompatActivity {
     private String lastQuery;
     private String lastUrl;
     private StaggeredGridLayoutManager gridLayoutManager;
+    private String lastBegin_date;
+    private String lastNewsDesk;
+    private String lastSort;
+
 
 
     @Override
@@ -147,17 +155,24 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void articleSearch(String query, String baseUrl) {
-        articleSearch(query, 0, true, baseUrl);
+        lastBegin_date = null;
+        lastNewsDesk = null;
+        lastSort = null;
+        articleSearch(query, 0, true, baseUrl, null, null, null);
     }
 
     private void articleSearch(int offset) {
-        articleSearch(lastQuery, offset, false, lastUrl);
+        articleSearch(lastQuery, offset, false, lastUrl, lastBegin_date, lastNewsDesk, lastSort);
     }
 
-    private void articleSearch(String query, final int offset, boolean clear, String baseUrl) {
+    private void articleSearch(String query, final int offset, boolean clear,
+                               String baseUrl, String begin_date, String newsDesk, String sort) {
         //Toast.makeText(SearchActivity.this, "Searching for "+ query, Toast.LENGTH_SHORT).show();
         lastQuery = query;
         lastUrl = baseUrl;
+        lastBegin_date = begin_date;
+        lastNewsDesk = newsDesk;
+        lastSort = sort;
 
         if (baseUrl == TOP_URL && offset > 0) {
             return;
@@ -169,6 +184,18 @@ public class SearchActivity extends AppCompatActivity {
         if (baseUrl == SEARCH_URL) {
             params.put("q", query);
             params.put("page", offset);
+            if (begin_date != null) {
+                params.put("begin_date", begin_date);
+                Toast.makeText(SearchActivity.this, begin_date, Toast.LENGTH_SHORT).show();
+            }
+            if (newsDesk != null) {
+                //params.put("news_desk", newsDesk);
+                params.put("fq", "news_desk:"+newsDesk);
+            }
+
+            if (sort != null)
+                params.put("sort", sort);
+
         }
         lastParams = params;
 
@@ -243,6 +270,32 @@ public class SearchActivity extends AppCompatActivity {
         }
 
     }
+
+    private final int REQUEST_CODE = 23;
+
+    public void onFilter(MenuItem menuItem) {
+        Intent i = new Intent(SearchActivity.this, FilterActivity.class);
+        startActivityForResult(i, REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+            case REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    String newsDesk = data.getStringExtra("news_desk");
+                    String sort = data.getStringExtra("sort");
+                    String date = data.getStringExtra("date");
+                    articleSearch(lastQuery, 0, true, lastUrl, date, newsDesk, sort);
+                    Toast.makeText(SearchActivity.this, "Filtering!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Handle failure case
+                }
+        }
+    }
+
+
 
     /*
     public void onArticleSearch(View view) {

@@ -4,4 +4,16 @@
     <string name="query_hint">Enter search query</string>
     <string name="search_button">Search</string>
     <string name="title_activity_article">ArticleActivity</string>
+    <string name="newsdesk_prompt">Newsdesk</string>
+    <string-array name="newsdesk_array">
+        <item>All</item>
+        <item>Obits</item>
+        <item>Obituary</item>
+        <item>Obituaries</item>
+        <item>Retirement</item>
+    </string-array>
+    <string-array name="sort_array">
+        <item>Oldest</item>
+        <item>Newest</item>
+    </string-array>
 </resources>
