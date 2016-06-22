@@ -11,8 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -36,15 +34,14 @@ public class SearchActivity extends AppCompatActivity {
 
 
     // @BindView(R.id.etQuery) EditText etQuery;
-    @BindView(R.id.rvResults) RecyclerView rvResults;
+    @BindView(R.id.rvResults)
+    RecyclerView rvResults;
     // @BindView(R.id.btnSearch) Button btnSearch;
 
 
     private ArrayList<Article> articles;
     private ArticleAdapter adapter;
-    private RequestParams lastParams;
-    private String lastQuery;
-    private String lastUrl;
+    private Query lastQuery;
     private StaggeredGridLayoutManager gridLayoutManager;
 
 
@@ -62,16 +59,9 @@ public class SearchActivity extends AppCompatActivity {
         gridLayoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvResults.setLayoutManager(gridLayoutManager);
-
-        rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                loadMoreArticles(page);
-            }
-        });
         setUpClickListener();
 
-        articleSearch("", TOP_URL);
+        topSearch();
 
     }
 
@@ -114,7 +104,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // perform query here
-                articleSearch(query, SEARCH_URL);
+                articleSearch(query);
 
                 // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
                 // see https://code.google.com/p/android/issues/detail?id=24599
@@ -146,53 +136,43 @@ public class SearchActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void articleSearch(String query, String baseUrl) {
-        articleSearch(query, 0, true, baseUrl);
+    private void topSearch() {
+        RequestParams params = new RequestParams();
+        AsyncHttpClient client = new AsyncHttpClient();
+        params.put("api-key", API_KEY);
+        client.get(TOP_URL, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                JSONArray articleJsonResults = null;
+                try {
+                    articleJsonResults = response.getJSONArray("results");
+                    articles.clear();
+                    articles.addAll(Article.fromJSONArray(articleJsonResults, true));
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void articleSearch(int offset) {
-        articleSearch(lastQuery, offset, false, lastUrl);
+        Query query = new Query(lastQuery, offset);
+        articleSearch(query, false);
     }
 
-    private void articleSearch(String query, final int offset, boolean clear, String baseUrl) {
-        //Toast.makeText(SearchActivity.this, "Searching for "+ query, Toast.LENGTH_SHORT).show();
+    private void articleSearch(String queryStr) {
+        Query query = new Query(queryStr);
         lastQuery = query;
-        lastUrl = baseUrl;
+        articleSearch(query, true);
+    }
 
-        if (baseUrl == TOP_URL && offset > 0) {
-            return;
-        }
+    private void articleSearch(Query query, boolean clear) {
+        RequestParams params = query.getParams(API_KEY);
 
         AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("api-key", API_KEY);
-        if (baseUrl == SEARCH_URL) {
-            params.put("q", query);
-            params.put("page", offset);
-        }
-        lastParams = params;
 
-        if (baseUrl == TOP_URL) {
-            client.get(baseUrl, params, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    //Log.d("DEBUG", response.toString());
-                    JSONArray articleJsonResults = null;
-
-                    try {
-                        articleJsonResults = response.getJSONArray("results");
-                        //Log.d("DEBUG", articleJsonResults.toString());
-                        articles.clear();
-                        articles.addAll(Article.fromJSONArray(articleJsonResults, true));
-                        adapter.notifyDataSetChanged();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-
-        else if (clear) {
+        if (clear) {
             rvResults.clearOnScrollListeners();
             rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
                 @Override
@@ -200,8 +180,7 @@ public class SearchActivity extends AppCompatActivity {
                     loadMoreArticles(page);
                 }
             });
-
-            client.get(baseUrl, params, new JsonHttpResponseHandler() {
+            client.get(SEARCH_URL, params, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     //Log.d("DEBUG", response.toString());
@@ -219,7 +198,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
             });
         } else {
-            client.get(baseUrl, params, new JsonHttpResponseHandler() {
+            client.get(SEARCH_URL, params, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     //Log.d("DEBUG", response.toString());
@@ -229,20 +208,17 @@ public class SearchActivity extends AppCompatActivity {
                         articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                         //Log.d("DEBUG", articleJsonResults.toString());
                         articles.addAll(Article.fromJSONArray(articleJsonResults, false));
-
-                        if (offset > 0) {
-                            int curSize = adapter.getItemCount();
-                            adapter.notifyItemRangeInserted(curSize, articles.size() - 1);
-                        } else
-                            adapter.notifyDataSetChanged();
+                        int curSize = adapter.getItemCount();
+                        adapter.notifyItemRangeInserted(curSize, articles.size() - 1);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             });
         }
-
     }
+
+    
 
     /*
     public void onArticleSearch(View view) {
