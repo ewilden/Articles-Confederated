@@ -43,6 +43,7 @@ public class SearchActivity extends AppCompatActivity {
     private ArticleAdapter adapter;
     private Query lastQuery;
     private StaggeredGridLayoutManager gridLayoutManager;
+    private MenuItem filterItem;
 
 
     @Override
@@ -118,6 +119,9 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        filterItem = menu.findItem(R.id.action_filter);
+        filterItem.setVisible(false);
+
         return true;
     }
 
@@ -162,6 +166,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void articleSearch(String queryStr) {
+        filterItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        filterItem.setVisible(true);
         Query query = new Query(queryStr);
         lastQuery = query;
         articleSearch(query, true);
@@ -218,7 +224,9 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    
+    public void onFilter(MenuItem mi) {
+        
+    }
 
     /*
     public void onArticleSearch(View view) {

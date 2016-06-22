@@ -10,6 +10,14 @@
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
 
+    <item android:id="@+id/action_filter"
+        android:orderInCategory="6"
+        android:title="Filter This Search"
+        android:icon="@drawable/ic_filter"
+        app:showAsAction="never"
+        android:onClick="onFilter"
+        />
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
