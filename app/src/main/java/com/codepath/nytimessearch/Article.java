@@ -21,8 +21,8 @@ public class Article implements Parcelable {
 
     public Article(JSONObject jsonObject, String urlKey, String titleKey) {
         try {
-            this.webUrl = jsonObject.getString(urlKey);
-            this.headline = jsonObject.getString(titleKey);
+            this.webUrl = jsonObject.getString(urlKey); // "url"
+            this.headline = jsonObject.getString(titleKey); // "title"
 
             JSONArray multimedia = jsonObject.getJSONArray("multimedia");
 

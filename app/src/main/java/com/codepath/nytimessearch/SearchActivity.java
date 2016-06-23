@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Filter;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -29,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements EditNameDialogFragment.FilterListener {
 
     //private final String API_KEY = "aded083163334d4fb0c54f6b9ede94ea";
     private final String API_KEY = "93718dded010432eb97833398a2db737";
@@ -265,10 +266,25 @@ public class SearchActivity extends AppCompatActivity {
 
     private final int REQUEST_CODE = 23;
 
+    /*
     public void onFilter(MenuItem mi) {
         Intent i = new Intent(SearchActivity.this, FilterActivity.class);
         i.putExtra("query", lastQuery);
         startActivityForResult(i, REQUEST_CODE);
+    } */
+
+    @Override
+    public void onFinishFilter(Query query) {
+        //Toast.makeText(SearchActivity.this, query.toString(), Toast.LENGTH_LONG).show();
+        lastQuery = query;
+        articleSearch(query, true);
+    }
+
+    public void onFilter(MenuItem mi) {
+        FragmentManager fm = getSupportFragmentManager();
+        EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(lastQuery);
+
+        editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 
     /*

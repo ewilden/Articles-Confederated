@@ -1,6 +1,7 @@
 package com.codepath.nytimessearch;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -57,6 +60,13 @@ public class ArticleActivity extends AppCompatActivity {
 
         // get reference to WebView
         WebView wvArticle = (WebView) findViewById(R.id.wvArticle);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            CookieManager.getInstance().removeAllCookies(null);
+        } else {
+            CookieManager.getInstance().removeAllCookie();
+        }
+
         // pass in the URL currently being used by the WebView
         shareIntent.putExtra(Intent.EXTRA_TEXT, wvArticle.getUrl());
 

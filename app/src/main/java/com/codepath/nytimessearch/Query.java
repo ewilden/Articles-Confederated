@@ -84,7 +84,7 @@ public class Query implements Parcelable {
         if (end_date != null) {
             params.put("end_date", format.format(end_date.getTime()));
         }
-        if (news_desk != null) {
+        if (news_desk != null && !news_desk.equals("All")) {
             params.put("fq", "news_desk:\""+news_desk+"\"");
         }
         if (sort != null) {
@@ -130,4 +130,16 @@ public class Query implements Parcelable {
             return new Query[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Query{" +
+                "q='" + q + '\'' +
+                ", news_desk='" + news_desk + '\'' +
+                ", begin_date=" + begin_date +
+                ", end_date=" + end_date +
+                ", sort='" + sort + '\'' +
+                ", page=" + page +
+                '}';
+    }
 }

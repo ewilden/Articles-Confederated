@@ -1,0 +1,75 @@
+<!-- fragment_edit_name.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_name"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="300dp"
+    android:minHeight="300dp"
+    android:padding="16dp"
+    android:layout_gravity="center" android:orientation="vertical"  >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/sort_order"
+        android:id="@+id/tvOrderLabel" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spOrder"
+        android:entries="@array/sort_array"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/news_desk"
+        android:id="@+id/tvNewsDesklabel"
+        android:paddingTop="16sp"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spNewsDesk"
+        android:entries="@array/news_desk_array"/>
+
+
+
+    <Button
+        android:layout_width="154sp"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_begin_date"
+        android:id="@+id/btnEditBegin"
+        android:gravity="left|center_vertical|start"
+        android:paddingLeft="16sp"
+        android:layout_marginTop="16sp"/>
+
+    <Button
+        android:layout_width="154sp"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_end_date"
+        android:id="@+id/btnEditEnd"
+        android:gravity="left|center_vertical|start"
+        android:paddingLeft="16sp"
+        android:layout_marginTop="16sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#D000"
+        android:layout_marginTop="16sp"
+        ></View>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:id="@+id/btnSubmit"
+        android:layout_gravity="right"
+        android:layout_marginTop="16sp"/>
+
+
+</LinearLayout>

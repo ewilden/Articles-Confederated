@@ -4,13 +4,16 @@
     <string name="query_hint">Enter search query</string>
     <string name="search_button">Search</string>
     <string name="title_activity_article">ArticleActivity</string>
-    
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="end_date">End Date</string>
     <string name="begin_date">Begin Date</string>
     <string name="sort_order">Sort Order</string>
     <string name="news_desk">News Desk</string>
+    <string name="edit_begin_date">Edit Begin Date</string>
+    <string name="edit_end_date">Edit End Date</string>
+    <string name="submit">Submit</string>
 
     <string-array name="sort_array">
         <item>Newest</item>
