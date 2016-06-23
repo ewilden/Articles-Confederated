@@ -87,9 +87,30 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(getActivity());
         super.onViewCreated(view, savedInstanceState);
+        query = getArguments().getParcelable("query");
+        begin_date = query.getBegin_date();
+        end_date = query.getEnd_date();
         Button btnSubmit = (Button) view.findViewById(R.id.btnSubmit);
         spNewsDesk = (Spinner) view.findViewById(R.id.spNewsDesk);
+        String news_desk = query.getNews_desk();
+        if (news_desk != null) {
+            for (int i = 0; i < spNewsDesk.getCount(); i++) {
+                if (news_desk.equals(spNewsDesk.getItemAtPosition(i))) {
+                    spNewsDesk.setSelection(i);
+                }
+            }
+        }
+
         spOrder = (Spinner) view.findViewById(R.id.spOrder);
+        String sort = query.getSort();
+        if (sort != null) {
+            for (int i = 0; i < spOrder.getCount(); i++) {
+                if (news_desk.equals(spOrder.getItemAtPosition(i))) {
+                    spOrder.setSelection(i);
+                }
+            }
+        }
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +146,9 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
         FragmentManager fm = getFragmentManager();
         DialogFragment df = new DatePickerFragment();
         df.setTargetFragment(EditNameDialogFragment.this, 300);
+        Bundle args = new Bundle();
+        args.putSerializable("begin_date", begin_date);
+        df.setArguments(args);
         df.show(fm, "begin_date");
     }
 
@@ -132,6 +156,9 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
         FragmentManager fm = getFragmentManager();
         DialogFragment df = new DatePickerFragment();
         df.setTargetFragment(EditNameDialogFragment.this, 300);
+        Bundle args = new Bundle();
+        args.putSerializable("end_date", end_date);
+        df.setArguments(args);
         df.show(fm, "end_date");
     }
 
@@ -164,7 +191,6 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
     public void onSubmit(View view) {
         String news_desk = spNewsDesk.getSelectedItem().toString();
         String sort = spOrder.getSelectedItem().toString();
-        Query query = getArguments().getParcelable("query");
         query = new Query(query, news_desk, begin_date, end_date, sort);
         FilterListener listener = (FilterListener) getActivity();
         listener.onFinishFilter(query);

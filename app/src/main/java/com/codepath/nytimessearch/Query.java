@@ -131,6 +131,22 @@ public class Query implements Parcelable {
         }
     };
 
+    public String getNews_desk() {
+        return news_desk;
+    }
+
+    public Calendar getBegin_date() {
+        return begin_date;
+    }
+
+    public Calendar getEnd_date() {
+        return end_date;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
     @Override
     public String toString() {
         return "Query{" +
