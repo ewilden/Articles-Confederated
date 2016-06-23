@@ -17,6 +17,7 @@ import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +46,7 @@ public class ArticleActivity extends AppCompatActivity {
         });
 
         webView.loadUrl(article.getWebUrl());
+        Toast.makeText(ArticleActivity.this, article.getWebUrl(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

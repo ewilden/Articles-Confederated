@@ -69,6 +69,17 @@ public class Query implements Parcelable {
         this.sort = sort;
     }
 
+    private String getFormattedDate(Calendar c) {
+        String yearStr = String.valueOf(c.get(Calendar.YEAR));
+        int month = c.get(Calendar.MONTH);
+        String monthStr = String.valueOf(++month);
+        if (month < 10) {
+            monthStr = "0" + monthStr;
+        }
+        String dayStr = String.valueOf(c.get(Calendar.DAY_OF_MONTH));
+        return yearStr + monthStr + dayStr;
+    }
+
     public RequestParams getParams(String apiKey) {
 
         // initialize parameters holder
@@ -76,6 +87,8 @@ public class Query implements Parcelable {
         // add API key
         params.put("api-key", apiKey);
         params.put("q", q);
+
+
         // set up date formatter
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         if (begin_date != null) {
@@ -84,6 +97,15 @@ public class Query implements Parcelable {
         if (end_date != null) {
             params.put("end_date", format.format(end_date.getTime()));
         }
+
+        /*
+        if (begin_date != null) {
+            params.put("begin_date", getFormattedDate(begin_date));
+        }
+        if (end_date != null) {
+            params.put("end_date", getFormattedDate(end_date));
+        }
+        */
         if (news_desk != null && !news_desk.equals("All")) {
             params.put("fq", "news_desk:\""+news_desk+"\"");
         }

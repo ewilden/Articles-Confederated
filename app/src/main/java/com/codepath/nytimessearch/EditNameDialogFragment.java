@@ -95,7 +95,7 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
         String news_desk = query.getNews_desk();
         if (news_desk != null) {
             for (int i = 0; i < spNewsDesk.getCount(); i++) {
-                if (news_desk.equals(spNewsDesk.getItemAtPosition(i))) {
+                if (news_desk.equals(spNewsDesk.getItemAtPosition(i).toString())) {
                     spNewsDesk.setSelection(i);
                 }
             }
@@ -105,7 +105,7 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
         String sort = query.getSort();
         if (sort != null) {
             for (int i = 0; i < spOrder.getCount(); i++) {
-                if (news_desk.equals(spOrder.getItemAtPosition(i))) {
+                if (news_desk.equals(spOrder.getItemAtPosition(i).toString())) {
                     spOrder.setSelection(i);
                 }
             }
