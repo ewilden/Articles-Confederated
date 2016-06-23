@@ -1,11 +1,15 @@
 package com.codepath.nytimessearch;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,43 +50,35 @@ public class FilterFragment extends DialogFragment {
      * @return A new instance of fragment FilterFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FilterFragment newInstance(String param1, String param2) {
+    public static FilterFragment newInstance(String title) {
         FilterFragment fragment = new FilterFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("title", title);
         fragment.setArguments(args);
         return fragment;
     }
 
+    @NonNull
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        String title = getArguments().getString("title");
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage("Are you sure?");
+        alertDialogBuilder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // on success
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_filter, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        // Get field from view
-        // mEditText = (EditText) view.findViewById(R.id.txt_your_name);
-        // Fetch arguments from bundle and set title
-        // String title = getArguments().getString("title", "Enter Name");
-        // getDialog().setTitle(title);
-        // Show soft keyboard automatically and request focus to field
-        // mEditText.requestFocus();
-        //getDialog().getWindow().setSoftInputMode(
-          //      WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        return alertDialogBuilder.create();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -42,6 +42,15 @@ public class Query implements Parcelable {
         this.page = 0;
     }
 
+    public Query(Query query, String q) {
+        this.q = q;
+        this.news_desk = query.news_desk;
+        this.begin_date = query.begin_date;
+        this.end_date = query.end_date;
+        this.sort = query.sort;
+        this.page = 0;
+    }
+
     // Returns the same query with the given page instead of the original.
     public Query(Query query, int page) {
         this.q = query.q;

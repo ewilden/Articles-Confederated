@@ -177,7 +177,12 @@ public class SearchActivity extends AppCompatActivity {
     private void articleSearch(String queryStr) {
         filterItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         filterItem.setVisible(true);
-        Query query = new Query(queryStr);
+        Query query;
+        if (lastQuery == null) {
+            query = new Query(queryStr);
+        } else {
+            query = new Query(lastQuery, queryStr);
+        }
         lastQuery = query;
         articleSearch(query, true);
     }
@@ -249,12 +254,21 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-
+    /*
     public void onFilter(MenuItem mi) {
         FragmentManager fm = getSupportFragmentManager();
-        FilterFragment ff = FilterFragment.newInstance("param1", "param2");
+        FilterFragment ff = FilterFragment.newInstance("title");
         ff.show(fm, "fragment_filter");
 
+    }
+    */
+
+    private final int REQUEST_CODE = 23;
+
+    public void onFilter(MenuItem mi) {
+        Intent i = new Intent(SearchActivity.this, FilterActivity.class);
+        i.putExtra("query", lastQuery);
+        startActivityForResult(i, REQUEST_CODE);
     }
 
     /*
@@ -263,4 +277,19 @@ public class SearchActivity extends AppCompatActivity {
         articleSearch(query, SEARCH_URL);
     }
     */
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+            case REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    Query q = data.getParcelableExtra("query");
+                    lastQuery = q;
+                    articleSearch(q, true);
+                } else {
+                    // Handle failure case
+                }
+        }
+    }
 }
