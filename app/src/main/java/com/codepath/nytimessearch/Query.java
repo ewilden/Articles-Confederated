@@ -98,14 +98,6 @@ public class Query implements Parcelable {
             params.put("end_date", format.format(end_date.getTime()));
         }
 
-        /*
-        if (begin_date != null) {
-            params.put("begin_date", getFormattedDate(begin_date));
-        }
-        if (end_date != null) {
-            params.put("end_date", getFormattedDate(end_date));
-        }
-        */
         if (news_desk != null && !news_desk.equals("All")) {
             params.put("fq", "news_desk:\""+news_desk+"\"");
         }

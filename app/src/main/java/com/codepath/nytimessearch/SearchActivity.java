@@ -37,20 +37,14 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
     private final String SEARCH_URL = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
     private final String TOP_URL = "https://api.nytimes.com/svc/topstories/v2/home.json";
 
-
-
-    // @BindView(R.id.etQuery) EditText etQuery;
     @BindView(R.id.rvResults)
     RecyclerView rvResults;
-    // @BindView(R.id.btnSearch) Button btnSearch;
-
 
     private ArrayList<Article> articles;
     private ArticleAdapter adapter;
     private Query lastQuery;
     private StaggeredGridLayoutManager gridLayoutManager;
     private MenuItem filterItem;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +56,6 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         ActionBar ab = getSupportActionBar();
         ab.setDisplayShowTitleEnabled(false);
         ab.setLogo(R.drawable.ic_action_name);
-        //setTheme(R.style.AppTheme_NoActionBar);
 
         articles = new ArrayList<>();
         adapter = new ArticleAdapter(articles);
@@ -73,7 +66,6 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         setUpClickListener();
 
         topSearch();
-
     }
 
     public void loadMoreArticles(int offset) {
@@ -261,24 +253,6 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         }
     }
 
-    /*
-    public void onFilter(MenuItem mi) {
-        FragmentManager fm = getSupportFragmentManager();
-        FilterFragment ff = FilterFragment.newInstance("title");
-        ff.show(fm, "fragment_filter");
-
-    }
-    */
-
-    private final int REQUEST_CODE = 23;
-
-    /*
-    public void onFilter(MenuItem mi) {
-        Intent i = new Intent(SearchActivity.this, FilterActivity.class);
-        i.putExtra("query", lastQuery);
-        startActivityForResult(i, REQUEST_CODE);
-    } */
-
     @Override
     public void onFinishFilter(Query query) {
         //Toast.makeText(SearchActivity.this, query.toString(), Toast.LENGTH_LONG).show();
@@ -291,27 +265,5 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance(lastQuery);
 
         filterDialogFragment.show(fm, "fragment_edit_name");
-    }
-
-    /*
-    public void onArticleSearch(View view) {
-        String query = etQuery.getText().toString();
-        articleSearch(query, SEARCH_URL);
-    }
-    */
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        switch (requestCode) {
-            case REQUEST_CODE:
-                if (resultCode == RESULT_OK) {
-                    Query q = data.getParcelableExtra("query");
-                    lastQuery = q;
-                    articleSearch(q, true);
-                } else {
-                    // Handle failure case
-                }
-        }
     }
 }

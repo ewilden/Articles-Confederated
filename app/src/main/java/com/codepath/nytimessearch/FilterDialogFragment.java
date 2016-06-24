@@ -38,11 +38,6 @@ public class FilterDialogFragment extends DialogFragment implements DatePickerFr
         void onFinishFilter(Query query);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
     public static FilterDialogFragment newInstance(String title) {
         FilterDialogFragment frag = new FilterDialogFragment();
         Bundle args = new Bundle();
@@ -129,15 +124,6 @@ public class FilterDialogFragment extends DialogFragment implements DatePickerFr
                 onEditEndDate(v);
             }
         });
-        // Get field from view
-        //mEditText = (EditText) view.findViewById(R.id.txt_your_name);
-        // Fetch arguments from bundle and set title
-        //String title = getArguments().getString("title", "Enter Name");
-        //getDialog().setTitle(title);
-        // Show soft keyboard automatically and request focus to field
-        //mEditText.requestFocus();
-        /* getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE); */
     }
 
     public void onEditBeginDate(View view) {
@@ -159,32 +145,6 @@ public class FilterDialogFragment extends DialogFragment implements DatePickerFr
         df.setArguments(args);
         df.show(fm, "end_date");
     }
-
-
-    /*
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setTitle("Filter Search");
-
-        alertDialogBuilder.setMessage("Are you sure?");
-        alertDialogBuilder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // on success
-            }
-        });
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        return alertDialogBuilder.create();
-    }
-    */
 
     public void onSubmit(View view) {
         String news_desk = spNewsDesk.getSelectedItem().toString();

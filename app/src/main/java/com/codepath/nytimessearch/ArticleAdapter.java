@@ -2,24 +2,18 @@ package com.codepath.nytimessearch;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
@@ -71,8 +65,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
         // Populate thumbnail image
         String thumbUrl = article.getThumbNail();
-
-
 
         Context c = holder.ivImage.getContext();
 
