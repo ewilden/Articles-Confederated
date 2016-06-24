@@ -34,7 +34,7 @@ public class DatePickerFragment extends DialogFragment
 
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
-        Toast.makeText(getActivity(), ""+month, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), ""+month, Toast.LENGTH_SHORT).show();
         int day = c.get(Calendar.DAY_OF_MONTH);
 
         // Create a new instance of DatePickerDialog and return it
