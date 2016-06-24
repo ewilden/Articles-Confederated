@@ -1,6 +1,7 @@
 package com.codepath.nytimessearch;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -25,15 +27,18 @@ import butterknife.ButterKnife;
 
 public class ArticleActivity extends AppCompatActivity {
 
+    @BindView (R.id.toolbar_title) TextView toolbar_title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         Article article = (Article) getIntent().getParcelableExtra("article");
-
+        toolbar_title.setText(article.getHeadline());
 
         WebView webView = (WebView) findViewById(R.id.wvArticle);
 
@@ -46,7 +51,8 @@ public class ArticleActivity extends AppCompatActivity {
         });
 
         webView.loadUrl(article.getWebUrl());
-        Toast.makeText(ArticleActivity.this, article.getWebUrl(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ArticleActivity.this, article.getWebUrl(), Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

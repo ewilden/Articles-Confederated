@@ -7,7 +7,7 @@ tools:context="com.codepath.nytimessearch.ArticleActivity">
     <item
         android:id="@+id/menu_item_share"
         app:showAsAction="ifRoom"
-        android:title="Share"
+        android:title="@string/share"
         app:actionProviderClass=
             "android.support.v7.widget.ShareActionProvider" />
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -13,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Filter;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -30,12 +30,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
-public class SearchActivity extends AppCompatActivity implements EditNameDialogFragment.FilterListener {
+public class SearchActivity extends AppCompatActivity implements FilterDialogFragment.FilterListener {
 
     //private final String API_KEY = "aded083163334d4fb0c54f6b9ede94ea";
     private final String API_KEY = "93718dded010432eb97833398a2db737";
     private final String SEARCH_URL = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
     private final String TOP_URL = "https://api.nytimes.com/svc/topstories/v2/home.json";
+
 
 
     // @BindView(R.id.etQuery) EditText etQuery;
@@ -58,6 +59,10 @@ public class SearchActivity extends AppCompatActivity implements EditNameDialogF
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayShowTitleEnabled(false);
+        ab.setLogo(R.drawable.ic_action_name);
+        //setTheme(R.style.AppTheme_NoActionBar);
 
         articles = new ArrayList<>();
         adapter = new ArticleAdapter(articles);
@@ -282,9 +287,9 @@ public class SearchActivity extends AppCompatActivity implements EditNameDialogF
 
     public void onFilter(MenuItem mi) {
         FragmentManager fm = getSupportFragmentManager();
-        EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(lastQuery);
+        FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance(lastQuery);
 
-        editNameDialogFragment.show(fm, "fragment_edit_name");
+        filterDialogFragment.show(fm, "fragment_edit_name");
     }
 
     /*

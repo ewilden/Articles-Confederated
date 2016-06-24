@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="textBackground">#FFFFFF</color>
     <color name="textBorder">#FFFFFF</color>
+    -->
+
+    <color name="colorPrimary">#9E5E02</color>
+    <!--<color name="colorPrimary">#3D2F2D</color>-->
+    <color name="colorPrimaryDark">#3D2F2D</color>
+    <!--<color name="colorPrimaryDark">#9E5E02</color>-->
+    <color name="colorAccent">#658584</color>
+    <color name="deepBackground">#F5F2BC</color>
+    <color name="textBackground">#FFFFFF</color>
+    <color name="textBorder">@color/textBackground</color>
 </resources>

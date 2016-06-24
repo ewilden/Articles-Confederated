@@ -1,34 +1,24 @@
 package com.codepath.nytimessearch;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.codepath.nytimessearch.R;
-
 import java.util.Calendar;
-import java.util.Date;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EditNameDialogFragment extends DialogFragment implements DatePickerFragment.DateListener {
+public class FilterDialogFragment extends DialogFragment implements DatePickerFragment.DateListener {
 
     private EditText mEditText;
     private Query query;
@@ -38,7 +28,7 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
     private Calendar end_date;
 
 
-    public EditNameDialogFragment() {
+    public FilterDialogFragment() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
@@ -53,16 +43,16 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
         super.onAttach(activity);
     }
 
-    public static EditNameDialogFragment newInstance(String title) {
-        EditNameDialogFragment frag = new EditNameDialogFragment();
+    public static FilterDialogFragment newInstance(String title) {
+        FilterDialogFragment frag = new FilterDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
         return frag;
     }
 
-    public static EditNameDialogFragment newInstance(Query query) {
-        EditNameDialogFragment frag = new EditNameDialogFragment();
+    public static FilterDialogFragment newInstance(Query query) {
+        FilterDialogFragment frag = new FilterDialogFragment();
         Bundle args = new Bundle();
         args.putParcelable("query", query);
         frag.setArguments(args);
@@ -145,7 +135,7 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
     public void onEditBeginDate(View view) {
         FragmentManager fm = getFragmentManager();
         DialogFragment df = new DatePickerFragment();
-        df.setTargetFragment(EditNameDialogFragment.this, 300);
+        df.setTargetFragment(FilterDialogFragment.this, 300);
         Bundle args = new Bundle();
         args.putSerializable("begin_date", begin_date);
         df.setArguments(args);
@@ -155,7 +145,7 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
     public void onEditEndDate(View view) {
         FragmentManager fm = getFragmentManager();
         DialogFragment df = new DatePickerFragment();
-        df.setTargetFragment(EditNameDialogFragment.this, 300);
+        df.setTargetFragment(FilterDialogFragment.this, 300);
         Bundle args = new Bundle();
         args.putSerializable("end_date", end_date);
         df.setArguments(args);

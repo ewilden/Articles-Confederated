@@ -8,16 +8,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.codepath.nytimessearch.SearchActivity"
-    tools:showIn="@layout/activity_search">
+    tools:showIn="@layout/activity_search"
+    android:clipToPadding="false"
+
+    >
 
 
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="32dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rvResults"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </RelativeLayout>
