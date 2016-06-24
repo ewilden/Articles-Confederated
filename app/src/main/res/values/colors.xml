@@ -9,11 +9,12 @@
     <color name="textBorder">#FFFFFF</color>
     -->
 
-    <color name="colorPrimary">#9E5E02</color>
+    <color name="colorPrimary">#3E4A4A</color>
     <!--<color name="colorPrimary">#3D2F2D</color>-->
-    <color name="colorPrimaryDark">#3D2F2D</color>
+    <color name="colorPrimaryDark">#1A140C</color>
     <!--<color name="colorPrimaryDark">#9E5E02</color>-->
-    <color name="colorAccent">#658584</color>
+    <!--<color name="colorAccent">#658584</color>-->
+    <color name="colorAccent">#C2CBCE</color>
     <color name="deepBackground">#F5F2BC</color>
     <color name="textBackground">#FFFFFF</color>
     <color name="textBorder">@color/textBackground</color>

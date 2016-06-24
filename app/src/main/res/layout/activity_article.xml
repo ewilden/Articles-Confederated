@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.codepath.nytimessearch.ArticleActivity"
-    android:theme="@style/AppTheme.NotSearch">
+    android:background="@android:color/background_light">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

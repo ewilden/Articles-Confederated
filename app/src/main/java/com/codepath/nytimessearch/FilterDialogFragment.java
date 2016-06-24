@@ -107,6 +107,14 @@ public class FilterDialogFragment extends DialogFragment implements DatePickerFr
                 onSubmit(v);
             }
         });
+        Button btnClear = (Button) view.findViewById(R.id.btnClear);
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClear(v);
+            }
+        });
+
         Button btnEditBegin = (Button) view.findViewById(R.id.btnEditBegin);
         Button btnEditEnd = (Button) view.findViewById(R.id.btnEditEnd);
         btnEditBegin.setOnClickListener(new View.OnClickListener() {
@@ -187,13 +195,20 @@ public class FilterDialogFragment extends DialogFragment implements DatePickerFr
         dismiss();
     }
 
+    public void onClear(View view) {
+        query = new Query(query, null, null, null, null);
+        FilterListener listener = (FilterListener) getActivity();
+        listener.onFinishFilter(query);
+        dismiss();
+    }
+
     @Override
     public void onDateSet(Calendar c, String tag) {
         if(tag.equals("begin_date")) {
-            Toast.makeText(getActivity(), "setting begin date!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "setting begin date!", Toast.LENGTH_SHORT).show();
             begin_date = c;
         } else if (tag.equals("end_date")) {
-            Toast.makeText(getActivity(), "setting end date!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "setting end date!", Toast.LENGTH_SHORT).show();
             end_date = c;
         }
     }

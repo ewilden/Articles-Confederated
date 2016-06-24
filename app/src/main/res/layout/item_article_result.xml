@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:background="@drawable/solid_color_shape"
+    android:elevation="10dp"
     >
 
     <ImageView
