@@ -55,6 +55,7 @@ public class ArticleActivity extends AppCompatActivity {
         // set up ability to share articles from webview
         MenuItem item = menu.findItem(R.id.menu_item_share);
         ShareActionProvider miShare = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
 
