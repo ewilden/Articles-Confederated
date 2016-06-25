@@ -55,7 +55,7 @@ public class SearchActivity extends AppCompatActivity implements FilterDialogFra
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayShowTitleEnabled(false);
-        ab.setLogo(R.drawable.ic_action_name);
+        ab.setLogo(R.drawable.ic_potato);
 
         articles = new ArrayList<>();
         adapter = new ArticleAdapter(articles);
