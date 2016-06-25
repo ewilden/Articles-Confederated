@@ -1,6 +1,6 @@
-# Project 2 - *Articles Confederated*
+# Project 2 - *Thumblr*
 
-**Articles Confederated** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
+**Thumblr** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
 Time spent: **20** hours spent in total
 
@@ -43,7 +43,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://github.com/ewilden/Flixster/raw/master/Flixster.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/ewilden/Articles-Confederated/raw/master/NYTimes.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
